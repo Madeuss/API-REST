@@ -32,23 +32,69 @@ const bodyParser = require("body-parser");
 			//retornando uma promise
 			produto.save().then(() => {
 				// Dado salvo com sucesso
-				res.statusCode = 201
+				res.statusCode = 201;
 				res.send();
 			}).catch((erro) => {
 				if(erro){
 					throw erro;
 				}
 				// Ocorreu algum erro
-				res.statusCode = 417
+				res.statusCode = 417;
 				res.send();
 			})
 		}else{
-			res.statusCode = 406
+			res.statusCode = 406;
 			res.send("Not acceptable");
 		}
 	})
 
+	// Listagem geral
+	app.get("/produtos", (req, res) => {
+		// Método find(condição de retorno*)
+		// *jason vazio{} = retornar todos os dados
+		Produto.find({},(erro, dados) => {
+			if(erro){
+				res.statusCode = 417;
+				res.send();
+			}
+			//Método express que retorna os dados em JSON
+			res.json(dados);
+		})
+	})
 
-app.listen(8000,() => {
+	// Listagem por ID
+	app.get("/produto/:id", (req, res) => {
+		Produto.findById(req.params.id).then((produto) => {
+			res.statusCode = 200;
+			res.json(produto);
+		}).catch((erro) => {
+			if(erro){
+				throw erro;
+				res.statusCode = 417;
+				res.send();
+			}
+		})
+	})
+
+	// Deletar
+	app.delete("/produto/:id", (req, res) => {
+		Produto.findByIdAndRemove(req.params.id).then((produto) => {
+			if(produto){
+				res.statusCode = 200;
+				res.send();
+			}else{
+				res.statusCode = 404
+				res.send();
+			}
+		}).catch((erro) => {
+			if(erro){
+				throw erro;
+				res.statusCode = 417;
+				res.send();
+			}
+		})
+	})
+
+app.listen(8080,() => {
   console.log("API rodando!");
 })
