@@ -1,6 +1,6 @@
 const app = require('express')();
 const mongoose = require('mongoose');
-const MONGO_URL = "mongodb+srv://mateus:abc123@cluster0-fnjae.azure.mongodb.net/test?retryWrites=true&w=majority";
+const MONGO_URL = "mongodb+srv://mateus:abc123456789@produto-uixzu.mongodb.net/test?retryWrites=true&w=majority";
 
 mongoose.connect(MONGO_URL,{
     useNewUrlParser: true
